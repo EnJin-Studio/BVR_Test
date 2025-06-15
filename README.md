@@ -25,13 +25,13 @@ bilibili-view-predictor/
 │   ├── clip\_text\_features.npy
 │   ├── uploader\_name\_features.npy
 │   └── video\_meta.csv
-├── images/                     # Downloaded thumbnails
-├── scripts/                    # Core functionality
-│   ├── fetch\_data.py           # Scrape homepage video & uploader info
+├── images/                      # Downloaded thumbnails
+├── scripts/                     # Core functionality
+│   ├── bilibili_web_crawler.py  # Scrape homepage video & uploader info
 │   ├── extract\_features.py     # Extract CLIP-based image & text features
 │   ├── build\_dataset.py        # Combine all features into training data
 │   └── train\_model.py          # Train MLP regression model
-├── model/                      # Trained models
+├── model/                       # Trained models
 │   └── mlp\_regressor.pth
 ├── requirements.txt
 └── README.md
