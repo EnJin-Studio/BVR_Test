@@ -70,7 +70,7 @@ def parse_recommend_items(data):
 def main(pages=10, ps=30, delay=1):
     
     # 尝试加载历史bvid集合
-    history_file = "bilibili_data_merged_deduped.csv"
+    history_file = "video_meta.csv"
     seen = set()
     if os.path.exists(history_file):
         old_df = pd.read_csv(history_file)

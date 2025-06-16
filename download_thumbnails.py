@@ -5,7 +5,7 @@ from PIL import Image
 from io import BytesIO
 
 # === 配置部分 ===
-CSV_FILE = "bilibili_data_merged_deduped.csv"       # 输入CSV文件
+CSV_FILE = "video_meta.csv"       # 输入CSV文件
 IMAGE_DIR = "images"              # 图像保存目录
 BVID_COL = "bvid"                 # 视频唯一ID列名
 URL_COL = "pic"                   # 图片链接列名
