@@ -2,16 +2,16 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 
-# 读取 CSV
+# Read CSV
 df = pd.read_csv("video_meta.csv")
 
-# 确保这些列都存在并处理缺失值
+# Ensure these columns exist and handle missing values
 numeric_cols = ["duration", "pub_seconds_ago", "uploader_follower", "danmaku_count"]
 df[numeric_cols] = df[numeric_cols].fillna(0)
 
-# Z-score 标准化
+# Z-score normalization
 scaler = StandardScaler()
 numeric_features = scaler.fit_transform(df[numeric_cols].values.astype(np.float32))
 
-# 保存为 .npy 文件
+# Save as .npy file
 np.save("numeric_features.npy", numeric_features)

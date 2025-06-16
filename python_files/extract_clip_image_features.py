@@ -5,12 +5,12 @@ import numpy as np
 from PIL import Image
 from tqdm import tqdm
 
-# === 配置项 ===
-IMAGE_DIR = "images"                       # 封面图路径
-IMAGE_OUTPUT = "clip_image_features.npy"   # 特征向量输出文件
-BVID_OUTPUT = "clip_image_bvids.npy"       # 顺序ID列表（方便追踪）
+# === Configuration ===
+IMAGE_DIR = "images"                       # Directory of cover images
+IMAGE_OUTPUT = "clip_image_features.npy"   # Output file for feature vectors
+BVID_OUTPUT = "clip_image_bvids.npy"       # Ordered list of BVIDs (for tracking)
 
-# === 初始化 CLIP 模型 ===
+# === Initialize CLIP model ===
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model, preprocess = clip.load("ViT-B/32", device=device)
 model.eval()

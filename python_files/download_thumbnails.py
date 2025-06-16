@@ -4,12 +4,12 @@ import requests
 from PIL import Image
 from io import BytesIO
 
-# === 配置部分 ===
-CSV_FILE = "video_meta.csv"       # 输入CSV文件
-IMAGE_DIR = "images"              # 图像保存目录
-BVID_COL = "bvid"                 # 视频唯一ID列名
-URL_COL = "pic"                   # 图片链接列名
-TIMEOUT = 5                       # 请求超时秒数
+# === Configuration Section ===
+CSV_FILE = "video_meta.csv"       # Input CSV file
+IMAGE_DIR = "images"              # Directory to save images
+BVID_COL = "bvid"                 # Column name for unique video ID
+URL_COL = "pic"                   # Column name for image URL
+TIMEOUT = 5                       # Request timeout in seconds
 
 def download_image(bvid, url, save_dir):
     os.makedirs(save_dir, exist_ok=True)
