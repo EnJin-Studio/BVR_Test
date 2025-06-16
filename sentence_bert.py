@@ -6,7 +6,7 @@ import numpy as np
 model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2')
 
 # 读取CSV文件
-df = pd.read_csv("bilibili_data_merged_deduped.csv")
+df = pd.read_csv("video_meta.csv")
 
 # 对title编码
 titles = df["title"].astype(str).tolist()

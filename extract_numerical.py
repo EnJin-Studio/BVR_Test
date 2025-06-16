@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler
 
 # 读取 CSV
-df = pd.read_csv("bilibili_data_merged_deduped.csv")
+df = pd.read_csv("video_meta.csv")
 
 # 确保这些列都存在并处理缺失值
 numeric_cols = ["duration", "pub_seconds_ago", "uploader_follower", "danmaku_count"]
