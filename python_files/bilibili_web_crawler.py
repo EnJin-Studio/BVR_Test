@@ -6,17 +6,18 @@ import os
 import pandas as pd
 from datetime import datetime
 
-
-# 模拟自己是B站主页，向B站数据库请求数据
-# User-Agent代表发出请求的浏览器是什么
-# Referer代表是B站发的请求
+# Simulate browser request to Bilibili homepage, fetch data from Bilibili API
+# User-Agent represents the browser making the request
+# Referer indicates that the request is from Bilibili
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36",
     "Referer": "https://www.bilibili.com"
 }
 
-# 获取B站首页的视频数据，ps为一次获取多少，建议30-50，fresh_idx为第几次请求推荐内容
-# timeout为等待5s，若未响应就抛出异常
+# Fetch recommended videos from Bilibili homepage
+# ps: number of items per request, suggest 30-50
+# fresh_idx: index for pagination
+# timeout waits for 5 seconds before throwing an exception
 def fetch_recommend_page(ps=30, fresh_idx=1):
     url = "https://api.bilibili.com/x/web-interface/index/top/feed/rcmd"
     params = {"ps": ps, "fresh_idx": fresh_idx, "fresh_type": 4}
@@ -24,8 +25,8 @@ def fetch_recommend_page(ps=30, fresh_idx=1):
     resp.raise_for_status()
     return resp.json()
 
-# 获取up主的粉丝量，b站将视频数据和用户数据分开，mid为up主的id
-# follower数据在data里
+# Get follower count for uploader (Bilibili separates video data from user data)
+# mid is the uploader’s user ID; follower info is under data
 def get_follower_count(mid):
     url = "https://api.bilibili.com/x/relation/stat"
     params = {"vmid": mid}
@@ -38,7 +39,7 @@ def get_follower_count(mid):
         print(f"[ERROR] 获取mid={mid}的粉丝数失败: {e}")
         return None
 
-# 把fetch_recommend_page中获取的需要的数据提取出来
+# Extract required fields from fetched recommend page
 def parse_recommend_items(data):
     items = []
     for v in data.get("data", {}).get("item", []):
@@ -66,10 +67,10 @@ def parse_recommend_items(data):
         })
     return items
 
-# 主要逻辑，pages为抓取几次，ps为一次抓几个视频
+# Main logic, pages: number of fetches; ps: items per fetch
 def main(pages=10, ps=30, delay=1):
     
-    # 尝试加载历史bvid集合
+    # Try to load previously seen bvids
     history_file = "video_meta.csv"
     seen = set()
     if os.path.exists(history_file):
@@ -90,7 +91,7 @@ def main(pages=10, ps=30, delay=1):
 
         count_before = len(all_items)
 
-        # 这一段让item加入follower，并且删掉mid
+        # Append follower count and remove mid
         for item in new_items:
             if item["bvid"] and item["bvid"] not in seen:
                 mid = item.get("uploader_mid")
@@ -105,7 +106,7 @@ def main(pages=10, ps=30, delay=1):
         print(f" → 本页新增 {len(all_items) - count_before} 条（总计 {len(all_items)} 条）")
         time.sleep(random.uniform(delay, 2))
 
-    # 保存当前批次为单独文件（带时间戳）
+    # Save current batch to timestamped CSV
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     batch_filename = f"data_batch_{timestamp}.csv"
     fieldnames = [
@@ -119,7 +120,7 @@ def main(pages=10, ps=30, delay=1):
 
     print(f"[INFO] 本次批次保存为 {batch_filename}（{len(all_items)} 条）")
 
-    # 自动合并去重保存
+    # Auto-merge and deduplicate with history
     csv_files = [batch_filename]
     if os.path.exists(history_file):
         csv_files.append(history_file)
