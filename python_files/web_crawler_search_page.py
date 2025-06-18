@@ -96,7 +96,7 @@ def parse_search_items(data):
 
 # Main logic
 def main(keywords, pages_per_keyword=50, delay=1):
-    history_file = "video_meta.csv"
+    history_file = os.path.join("csv_data", "video_meta.csv")
     seen = set()
     if os.path.exists(history_file):
         old_df = pd.read_csv(history_file)
@@ -127,7 +127,7 @@ def main(keywords, pages_per_keyword=50, delay=1):
             time.sleep(random.uniform(delay, 2))
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    batch_filename = f"data_batch_{timestamp}.csv"
+    batch_filename = os.path.join("csv_data", f"data_batch_{timestamp}.csv")
     fieldnames = [
         "bvid", "title", "pic", "duration", "pub_seconds_ago",
         "view_count", "danmaku_count", "uploader_name", "uploader_follower"

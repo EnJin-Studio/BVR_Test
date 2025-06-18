@@ -78,7 +78,7 @@ def parse_recommend_items(data):
 def main(pages=10, ps=30, delay=1):
     
     # Try to load previously seen bvids
-    history_file = "video_meta.csv"
+    history_file = os.path.join("python_files", "csv_data", "video_meta.csv")
     seen = set()
     if os.path.exists(history_file):
         old_df = pd.read_csv(history_file)
@@ -115,7 +115,7 @@ def main(pages=10, ps=30, delay=1):
 
     # Save current batch to timestamped CSV
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    batch_filename = f"data_batch_{timestamp}.csv"
+    batch_filename = os.path.join("csv_data", f"data_batch_{timestamp}.csv")
     fieldnames = [
         "bvid", "title", "pic", "duration", "pubdate", "pub_seconds_ago",
         "view_count", "danmaku_count", "uploader_name", "uploader_follower"
