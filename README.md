@@ -9,7 +9,7 @@ A multimodal machine learning pipeline to predict Bilibili homepage video view c
 - 📥 Crawl Bilibili homepage video metadata and thumbnails  
 - 🧠 Extract semantic features using OpenAI’s CLIP (image) & Sentence-BERT (title + uploader name)  
 - 🧮 Combine numerical metadata (e.g., followers, duration, danmu count)  
-- 🧷 Assemble unified 2052D feature vectors per video  
+- 🧷 Assemble unified 2051D feature vectors per video  
 - 📈 Train and evaluate a regression model (MLP)  
 - 📊 Provide predictions, content insights, and ranking capabilities  
 
