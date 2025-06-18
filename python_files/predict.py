@@ -14,7 +14,7 @@ torch.backends.cudnn.benchmark = True
 
 # Configuration
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-MODEL_PATH = "npy_data/model_fold4_state_dict.pt"
+MODEL_PATH = "model/model_fold4_state_dict.pt"
 HEADERS = {"User-Agent": "Mozilla/5.0"}
 
 sbert_model = SentenceTransformer('paraphrase-multilingual-mpnet-base-v2', device=device)
