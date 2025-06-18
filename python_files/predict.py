@@ -1,6 +1,7 @@
 import re
 import requests
 import torch
+import torch.nn as nn
 import numpy as np
 from PIL import Image
 from io import BytesIO
@@ -13,7 +14,7 @@ torch.backends.cudnn.benchmark = True
 
 # Configuration
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-MODEL_PATH = "npy_data/model_fold3_full.pt"
+MODEL_PATH = "npy_data/model_fold4_state_dict.pt"
 HEADERS = {"User-Agent": "Mozilla/5.0"}
 
 sbert_model = SentenceTransformer('paraphrase-multilingual-mpnet-base-v2', device=device)
@@ -62,10 +63,47 @@ def build_numeric_feature(duration, pubdate, followers, danmaku):
         np.log1p(danmaku)
     ], dtype=np.float32)
 
-    scaler_mean = np.load("scaler_mean.npy")
-    scaler_std = np.load("scaler_std.npy")
+    scaler_mean = np.load("npy_data/scaler_mean.npy")
+    scaler_std = np.load("npy_data/scaler_std.npy")
     z = (raw - scaler_mean) / scaler_std
     return z
+
+class MultiModalMLP(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.image_branch = nn.Sequential(
+            nn.Linear(512, 256), nn.ReLU(), nn.Dropout(0.3)
+        )
+        self.title_branch = nn.Sequential(
+            nn.Linear(768, 256), nn.ReLU(), nn.Dropout(0.3)
+        )
+        self.uploader_branch = nn.Sequential(
+            nn.Linear(768, 128), nn.ReLU(), nn.Dropout(0.3)
+        )
+        self.numeric_branch = nn.Sequential(
+            nn.Linear(4, 128), nn.ReLU(), nn.Dropout(0.3)
+        )
+        self.fusion = nn.Sequential(
+            nn.Linear(256 + 256 + 128 + 128, 512),
+            nn.ReLU(),
+            nn.Dropout(0.2),
+            nn.Linear(512, 256),
+            nn.ReLU(),
+            nn.Dropout(0.2),
+            nn.Linear(256, 64),
+            nn.ReLU(),
+            nn.Linear(64, 1)
+        )
+
+    def forward(self, img, title, up, num):
+        x1 = self.image_branch(img)
+        x2 = self.title_branch(title)
+        x3 = self.uploader_branch(up)
+        x4 = self.numeric_branch(num)
+        fused = torch.cat([x1, x2, x3, x4], dim=1)
+        return self.fusion(fused)
+
+
 
 # Predict main function
 def predict_from_url(url):
@@ -95,15 +133,22 @@ def predict_from_url(url):
     numeric_tensor = torch.tensor(numeric_vec[np.newaxis, :], dtype=torch.float32).to(device)
 
     # Load model
-    model = torch.load(MODEL_PATH, map_location=device).to(device)
+    model = MultiModalMLP().to(device)
+    model.load_state_dict(torch.load(MODEL_PATH, map_location=device))
     model.eval()
 
     with torch.no_grad():
-        log_view_count = model(img_tensor, title_tensor, uploader_tensor, numeric_tensor).item()
-        view_count = np.expm1(log_view_count)
+        z_score_pred = model(img_tensor, title_tensor, uploader_tensor, numeric_tensor).item()
+
+    log_mean = np.load("npy_data/view_log_mean.npy").item()
+    log_std = np.load("npy_data/view_log_std.npy").item()
+    log_view_count = z_score_pred * log_std + log_mean
+
+    view_count = np.expm1(log_view_count)
 
     print(f"\n[PREDICTED] log(view_count) = {log_view_count:.4f}")
     print(f"[PREDICTED] estimated view_count ≈ {int(view_count):,}")
+
 
 # Implement
 if __name__ == "__main__":

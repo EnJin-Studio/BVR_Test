@@ -15,3 +15,6 @@ view_log_zscore = scaler.fit_transform(view_log.values.reshape(-1, 1)).squeeze()
 
 # Save as .npy file
 np.save("view_count.npy", view_log_zscore)
+
+np.save("npy_data/view_log_mean.npy", scaler.mean_)
+np.save("npy_data/view_log_std.npy", scaler.scale_)

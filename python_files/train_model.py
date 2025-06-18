@@ -129,7 +129,7 @@ for fold, (train_idx, val_idx) in enumerate(kf.split(dataset)):
         if rmse < best_rmse:
             best_rmse = rmse
             patience_counter = 0
-            torch.save(model, f"{SAVE_MODEL_PREFIX}{fold+1}_full.pt")
+            torch.save(model.state_dict(), f"{SAVE_MODEL_PREFIX}{fold+1}_state_dict.pt")
             print(f"[Saved] New best model with RMSE {rmse:.4f}")
         else:
             patience_counter += 1

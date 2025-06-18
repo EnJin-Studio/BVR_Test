@@ -6,7 +6,7 @@ from PIL import Image
 from tqdm import tqdm
 
 # Configuration
-IMAGE_DIR = "images"                       # Directory of cover images
+IMAGE_DIR = "images"                    # Directory of cover images
 IMAGE_OUTPUT = "picture_features.npy"   # Output for picture feature vectors
 BVID_OUTPUT = "picture_bvids.npy"       # Ordered list of BVIDs (for tracking)
 
