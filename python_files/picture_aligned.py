@@ -1,18 +1,18 @@
 import numpy as np
 import pandas as pd
 
-# 1. Load the main CSV file used for model training
+# Load the CSV
 df = pd.read_csv("video_meta.csv")
 bvids_csv = df["bvid"].astype(str).tolist()
 
-# 2. Load original image features and their corresponding bvid order
-clip_feats = np.load("clip_image_features.npy")   # shape: [M, 512]
-clip_bvids = np.load("clip_image_bvids.npy")      # shape: [M]
+# Load image features and their corresponding bvid order
+clip_feats = np.load("picture_features.npy")   # shape: [M, 512]
+clip_bvids = np.load("picture_bvids.npy")      # shape: [M]
 
-# 3. Build a mapping from bvid to index
+# Build a mapping from bvid to index
 bvid_to_index = {bvid: idx for idx, bvid in enumerate(clip_bvids)}
 
-# 4. Create aligned array, initialized with zero vectors
+# Create aligned array
 aligned_clip_feats = np.zeros((len(bvids_csv), clip_feats.shape[1]), dtype=np.float32)
 
 missing = 0
@@ -25,6 +25,6 @@ for i, bvid in enumerate(bvids_csv):
 
 print(f"[INFO] Alignment complete. Missing image features: {missing} / {len(bvids_csv)}")
 
-# 5. Save the aligned image features
-np.save("clip_image_features_aligned.npy", aligned_clip_feats)
+# Save the aligned image features
+np.save("picture_features_aligned.npy", aligned_clip_feats)
 
