@@ -1,9 +1,10 @@
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
+import os
 
-# Read CSV
-df = pd.read_csv("video_meta.csv")
+# Read CSV from csv_data/
+df = pd.read_csv(os.path.join("csv_data", "video_meta.csv"))
 
 # Columns to normalize
 numeric_cols = ["duration", "pub_seconds_ago", "uploader_follower", "danmaku_count"]
@@ -19,9 +20,9 @@ df["danmaku_count"] = np.log1p(df["danmaku_count"])
 scaler = StandardScaler()
 numeric_features = scaler.fit_transform(df[numeric_cols].values.astype(np.float32))
 
-# ✅ 保存 scaler 参数
-np.save("scaler_mean.npy", scaler.mean_)
-np.save("scaler_std.npy", scaler.scale_)
+# Save scaler parameters to npy_data/
+np.save(os.path.join("npy_data", "scaler_mean.npy"), scaler.mean_)
+np.save(os.path.join("npy_data", "scaler_std.npy"), scaler.scale_)
 
-# Save as .npy file
-np.save("numeric_features.npy", numeric_features)
+# Save normalized numeric features to npy_data/
+np.save(os.path.join("npy_data", "numeric_features.npy"), numeric_features)

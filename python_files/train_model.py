@@ -13,7 +13,7 @@ TITLE_PATH = os.path.join(NPY_DIR, "title.npy")                         # [N, 76
 UPLOADER_PATH = os.path.join(NPY_DIR, "uploader.npy")                   # [N, 768]
 NUMERIC_PATH = os.path.join(NPY_DIR, "numeric_features.npy")            # [N, 4]
 Y_PATH = os.path.join(NPY_DIR, "view_count.npy")                        # [N]
-SAVE_MODEL_PREFIX = os.path.join(NPY_DIR, "model_fold")
+SAVE_MODEL_PREFIX = os.path.join("model", "model_fold")
 
 BATCH_SIZE = 64
 EPOCHS = 50

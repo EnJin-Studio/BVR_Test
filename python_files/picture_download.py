@@ -6,12 +6,12 @@ from io import BytesIO
 from tqdm import tqdm
 
 # Configuration Section
-CSV_FILE = "video_meta.csv"       # Input CSV file
-IMAGE_DIR = "images"              # Directory to save images
-BVID_COL = "bvid"                 
+CSV_FILE = os.path.join("csv_data", "video_meta.csv")   # Input CSV file
+IMAGE_DIR = "images"                                    # Directory to save images
+BVID_COL = "bvid"                  
 URL_COL = "pic"                  
-TIMEOUT = 5                       # Request timeout
-LOG_FILE = "download_log.csv" 
+TIMEOUT = 5                                             # Request timeout
+LOG_FILE = os.path.join("logs", "download_log.csv")     # Save download log
 
 def download_image(bvid, url, save_dir):
     os.makedirs(save_dir, exist_ok=True)
