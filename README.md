@@ -41,7 +41,7 @@ README.md
 
 ---
 
-## 📌 Input Feature Vector (2052 Dimensions)
+## 📌 Input Feature Vector (2051 Dimensions)
 
 | Type     | Feature Name              | Dim | Description                                    |
 |----------|---------------------------|-----|------------------------------------------------|
@@ -51,7 +51,6 @@ README.md
 | Numeric  | Followers (log1p scaled)  | 1   | `log1p(follower_count)`                        |
 | Numeric  | Video Duration (sec)      | 1   | `Raw duration`                                 |
 | Numeric  | Time Since Published (sec)| 1   | `log1p(seconds since upload)`                  |
-| Numeric  | Danmu Count               | 1   | `log1p(current visible danmu bullet count)`    |
 
 ---
 
