@@ -46,7 +46,7 @@ README.md
 | Type     | Feature Name              | Dim | Description                                    |
 |----------|---------------------------|-----|------------------------------------------------|
 | Image    | Thumbnail (CLIP)          | 512 | `CLIP.encode_image()`                          |
-| Text     | Title (CLIP)              | 768 | `SentenceTransformer.encode()`                 |
+| Text     | Title (SBERT)             | 768 | `SentenceTransformer.encode()`                 |
 | Text     | Uploader Name (SBERT)     | 768 | `SentenceTransformer.encode()`                 |
 | Numeric  | Followers (log1p scaled)  | 1   | `log1p(follower_count)`                        |
 | Numeric  | Video Duration (sec)      | 1   | `Raw duration`                                 |
