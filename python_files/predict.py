@@ -14,7 +14,7 @@ torch.backends.cudnn.benchmark = True
 
 # Configuration
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-MODEL_PATH = "model/model_fold4_state_dict.pt"
+MODEL_PATH = "model/model_fold2_state_dict.pt"
 HEADERS = {"User-Agent": "Mozilla/5.0"}
 
 sbert_model = SentenceTransformer('paraphrase-multilingual-mpnet-base-v2', device=device)
@@ -60,7 +60,6 @@ def build_numeric_feature(duration, pubdate, followers, danmaku):
         duration,
         np.log1p(followers),
         np.log1p(seconds_ago),
-        np.log1p(danmaku)
     ], dtype=np.float32)
 
     scaler_mean = np.load("npy_data/scaler_mean.npy")
@@ -81,7 +80,7 @@ class MultiModalMLP(nn.Module):
             nn.Linear(768, 128), nn.ReLU(), nn.Dropout(0.3)
         )
         self.numeric_branch = nn.Sequential(
-            nn.Linear(4, 128), nn.ReLU(), nn.Dropout(0.3)
+            nn.Linear(3, 128), nn.ReLU(), nn.Dropout(0.3)
         )
         self.fusion = nn.Sequential(
             nn.Linear(256 + 256 + 128 + 128, 512),

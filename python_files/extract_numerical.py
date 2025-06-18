@@ -7,13 +7,14 @@ import os
 df = pd.read_csv(os.path.join("csv_data", "video_meta.csv"))
 
 # Columns to normalize
-numeric_cols = ["duration", "pub_seconds_ago", "uploader_follower", "danmaku_count"]
+# numeric_cols = ["duration", "pub_seconds_ago", "uploader_follower", "danmaku_count"]
+numeric_cols = ["duration", "pub_seconds_ago", "uploader_follower"]
 df[numeric_cols] = df[numeric_cols].fillna(0)
 
 # Apply log1p to selected long-tail columns
 df["pub_seconds_ago"] = np.log1p(df["pub_seconds_ago"])
 df["uploader_follower"] = np.log1p(df["uploader_follower"])
-df["danmaku_count"] = np.log1p(df["danmaku_count"])
+# df["danmaku_count"] = np.log1p(df["danmaku_count"])
 # duration remains unchanged
 
 # Z-score normalization

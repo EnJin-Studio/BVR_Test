@@ -11,7 +11,7 @@ NPY_DIR = "npy_data"
 IMAGE_PATH = os.path.join(NPY_DIR, "picture_features_aligned.npy")      # [N, 512]
 TITLE_PATH = os.path.join(NPY_DIR, "title.npy")                         # [N, 768]
 UPLOADER_PATH = os.path.join(NPY_DIR, "uploader.npy")                   # [N, 768]
-NUMERIC_PATH = os.path.join(NPY_DIR, "numeric_features.npy")            # [N, 4]
+NUMERIC_PATH = os.path.join(NPY_DIR, "numeric_features.npy")            # [N, 3]
 Y_PATH = os.path.join(NPY_DIR, "view_count.npy")                        # [N]
 SAVE_MODEL_PREFIX = os.path.join("model", "model_fold")
 
@@ -54,7 +54,7 @@ class MultiModalMLP(nn.Module):
             nn.Linear(768, 128), nn.ReLU(), nn.Dropout(0.3)
         )
         self.numeric_branch = nn.Sequential(
-            nn.Linear(4, 128), nn.ReLU(), nn.Dropout(0.3)
+            nn.Linear(3, 128), nn.ReLU(), nn.Dropout(0.3)
         )
         self.fusion = nn.Sequential(
             nn.Linear(256 + 256 + 128 + 128, 512),
