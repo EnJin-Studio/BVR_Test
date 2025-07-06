@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 # 🎬 Bilibili Video View Count Prediction
+=======
+# 🔍 Bilibili Video View Count Predictor（这是test）
+>>>>>>> Stashed changes
 
 This project aims to predict the view count of Bilibili homepage-recommended videos using multimodal input features, including thumbnail images, video titles, uploader information, and structured metadata. It integrates CLIP-based feature extraction, structured preprocessing, and regression model training for view prediction and video content scoring.
 
